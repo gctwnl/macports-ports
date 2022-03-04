@@ -2,6 +2,7 @@ PortSystem  1.0
 
 name            postfix
 version         3.7.0
+revision        1
 categories      mail
 license         {IBMPL-1 EPL-2}
 maintainers     {jmr @jmroot} openmaintainer
@@ -132,6 +133,13 @@ post-activate {
                  ${prefix}/etc/postfix/${f}
         }
     }
+}
+
+# Some macOS versions have a broken kqueue which stops postfix from receiving mail
+# This is supposed to be fixed after macOS 10.8 (darwin 12) but in case a return to poll() and select()
+# can be forced by this variant
+variant nokqueue {
+    lappend CCARGS -DNO_KQUEUE
 }
 
 # Tell the user about editing the sample configuration files.
